@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AUDITORÍA TÉCNICA Y AMBIENTAL PRO - VÍA GUATAPÉ</title>
+    <style>
+        :root { 
+            --primary: #0a2e50; 
+            --secondary: #b8860b; 
+            --accent: #d35400;
+            --border: #b0bec5;
+            --bg-light: #f4f7f8;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background: #e0e4e8; 
+            margin: 0; 
+            padding: 10px; 
+            font-size: 11.5px;
+            color: #263238;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        .paper-container { 
+            background: #ffffff; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 20px 30px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+            border-top: 10px solid var(--primary);
+            border-radius: 6px;
+        }
+
+        .print-wrapper { width: 100%; border-collapse: collapse; }
+        .print-wrapper > thead { display: table-header-group; }
+        .print-wrapper > tbody { display: table-row-group; }
+        
+        .header-container {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 3px double var(--primary); padding-bottom: 15px; margin-bottom: 15px; gap: 10px;
+        }
+        .logo-box {
+            width: 110px; height: 75px; border: 2px dashed #90a4ae; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+            color: #78909c; font-size: 10px; text-align: center; background: var(--bg-light);
+            position: relative; overflow: hidden; flex-shrink: 0; cursor: pointer;
+        }
+        .logo-box img { max-width: 100%; max-height: 100%; display: none; object-fit: contain; }
+        
+        .header-title { text-align: center; flex-grow: 1; }
+        .header-title h1 { color: var(--primary); font-size: 17px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;}
+        .header-title h2 { color: #546e7a; font-size: 12px; margin: 0 0 3px 0; }
+        .header-title p { margin: 0; font-size: 10px; font-weight: bold; color: var(--secondary); }
+
+        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        .info-table td { border: 1px solid var(--border); padding: 8px; }
+        .info-table .bg-gray { background: var(--bg-light); font-weight: bold; color: var(--primary); width: 15%; font-size: 11px;}
+        .info-input { width: 100%; border: none; background: transparent; font-size: 12px; outline: none; font-family: inherit; -webkit-appearance: none; border-bottom: 1px dotted #ccc;}
+
+        .section-title { 
+            background: var(--primary); color: white; padding: 10px 15px; font-size: 13px; 
+            margin-top: 25px; margin-bottom: 0; border-left: 6px solid var(--secondary);
+            text-transform: uppercase; font-weight: bold; border-radius: 4px 4px 0 0;
+            page-break-after: avoid;
+        }
+        .audit-table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 10px; }
+        .audit-table tr { page-break-inside: avoid; }
+        .audit-table th, .audit-table td { border: 1px solid var(--border); padding: 8px; vertical-align: top; }
+        .audit-table th { background: var(--bg-light); color: var(--primary); text-align: center; font-size: 11px; }
+        
+        .col-ficha { width: 7%; font-weight: bold; text-align: center; color: var(--accent); font-size: 10px; }
+        .col-req { width: 40%; }
+        .col-eval { width: 15%; text-align: center; }
+        .col-obs { width: 38%; }
+
+        .param-desc { font-size: 10.5px; color: #444; display: block; margin-top: 4px; line-height: 1.3;}
+        .tolerance { font-size: 10px; color: var(--accent); font-weight: bold; display: block; margin-top: 4px; background: #fff3e0; padding: 4px; border-radius: 4px; border-left: 3px solid var(--accent);}
+
+        .status-select { 
+            width: 100%; padding: 10px 5px; font-weight: bold; text-align: center; 
+            border: 1px solid #ccc; border-radius: 6px; cursor: pointer; font-size: 12px;
+            background-color: #fff; -webkit-appearance: none; appearance: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .status-cumple { background-color: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
+        .status-nocumple { background-color: #ffebee; color: #c62828; border-color: #c62828; }
+        .status-na { background-color: #eeeeee; color: #616161; }
+
+        textarea { 
+            width: 100%; min-height: 50px; border: 1px solid var(--border); padding: 8px; 
+            box-sizing: border-box; resize: vertical; font-family: inherit; font-size: 11px;
+            background-color: #fff; border-radius: 6px; margin-bottom: 5px; -webkit-appearance: none;
+        }
+
+        .upload-zone {
+            display: flex; align-items: center; justify-content: center; background-color: #e3f2fd; 
+            border: 2px dashed #90caf9; border-radius: 6px; padding: 10px; cursor: pointer; transition: 0.2s;
+        }
+        .upload-zone:hover { background-color: #bbdefb; }
+        .upload-zone span { color: #1565c0; font-weight: bold; font-size: 11px; text-align: center;}
+        input[type="file"] { display: none; }
+        
+        .image-gallery { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .image-gallery img { width: calc(33.333% - 4px); height: 90px; border: 1px solid #cfd8dc; border-radius: 6px; object-fit: cover; cursor: pointer; }
+
+        .fab-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+        .btn-action { 
+            padding: 12px 20px; color: white; border: none; border-radius: 50px; 
+            cursor: pointer; font-weight: bold; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); -webkit-tap-highlight-color: transparent;
+        }
+        .btn-print { background: #2e7d32; }
+        .btn-clear { background: var(--accent); }
+
+        .signatures { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; page-break-inside: avoid; }
+        .sig-box { width: 30%; text-align: center; border-top: 1px solid #000; padding-top: 8px; font-size: 11px; font-weight: bold;}
+        .sig-box input { width: 90%; text-align: center; border: none; border-bottom: 1px dotted #999; margin-top: 4px; font-size: 11px;}
+
+        @media screen and (max-width: 768px) {
+            body { padding: 5px; }
+            .paper-container { padding: 15px 10px; border-top: 6px solid var(--primary); }
+            .header-container { flex-wrap: wrap; justify-content: center; text-align: center; }
+            .logo-box { width: 80px; height: 60px; }
+            .header-title { width: 100%; order: -1; margin-bottom: 10px; }
+            .header-title h1 { font-size: 15px; }
+            .info-table, .info-table tbody, .info-table tr, .info-table td { display: block; width: 100%; box-sizing: border-box;}
+            .info-table td { border: none; padding: 4px 0; }
+            .info-table .bg-gray { background: transparent; padding-bottom: 2px; color: #555; font-size: 10px;}
+            .info-input { border-bottom: 1px solid #ccc; border-radius: 0; padding-bottom: 4px; margin-bottom: 8px; width: 100%;}
+            .print-wrapper, .print-wrapper > thead, .print-wrapper > tbody { display: block; width: 100%; }
+            .audit-table, .audit-table tbody, .audit-table tr, .audit-table td { display: block; width: 100%; box-sizing: border-box; }
+            .audit-table thead { display: none; } 
+            .audit-table tr { margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+            .audit-table td { border: none; border-bottom: 1px solid #eee; padding: 12px; }
+            .audit-table td:last-child { border-bottom: none; }
+            .audit-table td::before { content: attr(data-label); display: block; font-weight: bold; color: var(--primary); font-size: 10px; margin-bottom: 5px; text-transform: uppercase; }
+            .image-gallery img { width: calc(50% - 3px); height: 110px; }
+            .signatures { flex-direction: column; gap: 40px; align-items: center; }
+            .sig-box { width: 80%; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; font-size: 9px; }
+            .paper-container { box-shadow: none; border: none; padding: 0; max-width: 100%; width: 100%; }
+            .no-print, .upload-zone, .fab-container { display: none !important; }
+            .print-wrapper { display: table; }
+            .print-wrapper > thead { display: table-header-group; }
+            .print-wrapper > tbody { display: table-row-group; }
+            .audit-table { display: table; }
+            .audit-table tbody { display: table-row-group; }
+            .audit-table tr { display: table-row; margin: 0; border: none; box-shadow: none;}
+            .audit-table td, .audit-table th { display: table-cell; border: 1px solid #000; padding: 5px; }
+            .audit-table td::before { display: none; }
+            .col-ficha { width: 7%; } .col-req { width: 42%; } .col-eval { width: 13%; } .col-obs { width: 38%; }
+            textarea { border: none; background: transparent; resize: none; min-height: 25px; padding: 0; font-size: 9px;}
+            .info-input { border-bottom: 1px dotted #ccc; font-size: 10px;}
+            .status-select { border: none; background: transparent !important; color: #000 !important; font-weight: bold; padding: 0; text-align: center; font-size: 9px;}
+            .image-gallery img { border: 1px solid #000; height: 100px; width: auto; max-width: 48%; page-break-inside: avoid; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="fab-container no-print">
+    <button class="btn-action btn-print" onclick="window.print()">🖨️ Generar PDF</button>
+    <button class="btn-action btn-clear" onclick="limpiarTodo()">🗑️ Limpiar</button>
+</div>
+
+<div class="paper-container">
+    <table class="print-wrapper">
+        <thead>
+            <tr>
+                <td>
+                    <div class="header-container">
+                        <div class="logo-box">
+                            <img id="logo1" src="">
+                            <label class="no-print" style="cursor:pointer; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+                                <span>+ Logo Alcaldía</span>
+                                <input type="file" accept="image/*" onchange="loadLogo(this, 'logo1')">
+                            </label>
+                        </div>
+                        
+                        <div class="header-title">
+                            <h1>ACTA DE AUDITORÍA Y CONTROL AMBIENTAL</h1>
+                            <h2>VÍA RURAL GRANADA - GUATAPÉ (SECTOR LA SONADORA Y LA PEÑA)</h2>
+                            <p>EVALUACIÓN PLAN DE ADAPTACIÓN A LA GUÍA AMBIENTAL (PAGA)</p>
+                        </div>
+                        
+                        <div class="logo-box">
+                            <img id="logo2" src="">
+                            <label class="no-print" style="cursor:pointer; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+                                <span>+ Logo Interventor</span>
+                                <input type="file" accept="image/*" onchange="loadLogo(this, 'logo2')">
+                            </label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr>
+                <td>
+                    <table class="info-table">
+                        <tr>
+                            <td class="bg-gray">Contratista:</td>
+                            <td><input type="text" class="info-input" placeholder="Nombre/Razón Social"></td>
+                            <td class="bg-gray">Fecha de Auditoría:</td>
+                            <td><input type="date" class="info-input" id="fecha-hoy"></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-gray">Abscisas/Tramo:</td>
+                            <td><input type="text" class="info-input" placeholder="Ej: K5+211 a K6+905"></td>
+                            <td class="bg-gray">Auditor / M.P:</td>
+                            <td><input type="text" class="info-input" placeholder="Nombre del Interventor"></td>
+                        </tr>
+                    </table>
+
+                    <div class="section-title">1. GESTIÓN SOCIAL Y DOCUMENTAL (DAGA / PGS)</div>
+                    <table class="audit-table">
+                        <thead><tr><th class="col-ficha">FICHA</th><th class="col-req">REQUERIMIENTO PAGA AL DETALLE</th><th class="col-eval">ESTADO</th><th class="col-obs">REGISTRO Y EVIDENCIA FOTOGRÁFICA</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PGS-7.3-16</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Levantamiento Actas de Vecindad</b>
+                                    <span class="param-desc">Elaboración en el 100% de las infraestructuras, cercas, cultivos y servicios públicos aledaños ANTES de iniciar obras.</span>
+                                    <span class="tolerance">Tolerancia Cero: Debe incluir registro fotográfico/fílmico obligatorio y firma de interventoría.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PGS-6.1-21</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Atención Comunitaria (PQRS)</b>
+                                    <span class="param-desc">Disponer de puntos de recepción de quejas. Tiempos de ley para dar respuesta a la comunidad y autoridades.</span>
+                                    <span class="tolerance">Plazos obligatorios: 15 días hábiles para quejas/reclamos, 10 días para solicitudes de información.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-title">2. MANEJO DE MATERIALES, CONCRETOS Y ESCOMBROS (PAC)</div>
+                    <table class="audit-table">
+                        <thead><tr><th class="col-ficha">FICHA</th><th class="col-req">REQUERIMIENTO PAGA AL DETALLE</th><th class="col-eval">ESTADO</th><th class="col-obs">REGISTRO Y EVIDENCIA FOTOGRÁFICA</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PAC-2.1-04</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Acopios Temporales de Materiales Pétreos</b>
+                                    <span class="param-desc">Confinamiento de materiales, aislamiento del piso con estibas/plásticos y cobertura con lona/polietileno.</span>
+                                    <span class="tolerance">Restricción: Volumen acopiado en vía solo para 1 o 2 jornadas. Máximo 24h si está en espacio público.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PAC-2.1-04</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Preparación de Concretos (Placa Huella/Cunetas)</b>
+                                    <span class="param-desc">Diseño de formaletas herméticas. Evitar escurrimiento en la preparación in situ.</span>
+                                    <span class="tolerance">Prohibido tajantemente: Mezclar directamente sobre el suelo. Exigido uso de plataforma metálica o geotextil.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PAC-2.4-07</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Transporte y Disposición de RCD (Escombros)</b>
+                                    <span class="param-desc">Vehículos con contenedor continuo sin roturas. Certificado de ZODME o empresa autorizada (Ej. ECORCD S.A.S).</span>
+                                    <span class="tolerance">Exigencia: La carpa debe sujetarse fijamente bajando al menos 30 cm desde el borde superior del platón.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-title">3. PROTECCIÓN HÍDRICA Y RESIDUOS SÓLIDOS (PGH)</div>
+                    <table class="audit-table">
+                        <thead><tr><th class="col-ficha">FICHA</th><th class="col-req">REQUERIMIENTO PAGA AL DETALLE</th><th class="col-eval">ESTADO</th><th class="col-obs">REGISTRO Y EVIDENCIA FOTOGRÁFICA</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PGH-3.2-09</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Manejo de Aguas Residuales Domésticas</b>
+                                    <span class="param-desc">Instalación de unidades sanitarias con la Asociación Internacional de Sanidad Portátil (PSAI).</span>
+                                    <span class="tolerance">Relación estricta: 1 baño por cada 15 trabajadores, separados por sexo. Mantenimiento comprobable mínimo 2 veces semanales.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PAC-2.5-08</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Manejo de Residuos Peligrosos (RESPEL)</b>
+                                    <span class="param-desc">Aislamiento de filtros, aceites y estopas. Almacenamiento bajo techo sin contacto con el suelo.</span>
+                                    <span class="tolerance">Empaque: Bolsas rojas de polipropileno calibre > 1.8 mm, peso máx 8 kg. Retiro máximo cada 8 días.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-title">4. SEÑALIZACIÓN, MAQUINARIA Y CONTINGENCIAS (PMIT / PSST)</div>
+                    <table class="audit-table">
+                        <thead><tr><th class="col-ficha">FICHA</th><th class="col-req">REQUERIMIENTO PAGA AL DETALLE</th><th class="col-eval">ESTADO</th><th class="col-obs">REGISTRO Y EVIDENCIA FOTOGRÁFICA</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PAC-2.3-06</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Cerramientos y Plan de Manejo de Tránsito</b>
+                                    <span class="param-desc">Aislamiento perimetral completo del frente de obra y senderos peatonales mínimos de 1 metro.</span>
+                                    <span class="tolerance">Material: Cinta naranja mín. 12 cm de ancho (o malla), apoyada sobre parales de 1.20 m de alto, espaciados cada 3 a 5 metros.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">PMIT-4.2-11</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Mantenimiento de Maquinaria y Vehículos</b>
+                                    <span class="param-desc">Vehículos con extintor multipropósito de 10 lb, equipo de carretera y alarmas de reversa activas.</span>
+                                    <span class="tolerance">Prohibición: Cero mtto. correctivo en la vía. El preventivo (cada 200h) debe usar material aislante sobre el suelo.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Ficha:" class="col-ficha">Plan Cont.<br>PBSE 6.1</td>
+                                <td data-label="Requisito:" class="col-req">
+                                    <b>Atención de Derrames, Flora y Primeros Auxilios</b>
+                                    <span class="param-desc">Protección de árboles (no hay permiso de tala). Botiquín equipado (tabla rígida, gasas, isodine, inmovilizadores).</span>
+                                    <span class="tolerance">Crítico: Kit de derrames debe contener ARENA (está expresamente prohibido usar aserrín) y barreras absorbentes.</span>
+                                </td>
+                                <td data-label="Estado:" class="col-eval"><select class="status-select" onchange="changeColor(this)"><option value="">--</option><option value="cumple">CUMPLE</option><option value="nocumple">NO CUMPLE</option><option value="na">N/A</option></select></td>
+                                <td data-label="Evidencias:" class="col-obs">
+                                    <textarea placeholder="Observaciones del hallazgo..."></textarea>
+                                    <label class="upload-zone no-print"><span>📸 Adjuntar Evidencias</span><input type="file" multiple accept="image/*" onchange="handleFiles(this)"></label><div class="image-gallery"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="signatures">
+                        <div class="sig-box">
+                            <br><br><br>
+                            Firma Interventor / Supervisor<br>
+                            <input type="text" placeholder="Nombre completo"><br>
+                            <input type="text" placeholder="Matrícula Profesional / Tarjeta">
+                        </div>
+                        <div class="sig-box">
+                            <br><br><br>
+                            Firma Residente Ambiental Contratista<br>
+                            <input type="text" placeholder="Nombre completo"><br>
+                            <input type="text" placeholder="Licencia / Matrícula Profesional">
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Fecha automática
+    document.getElementById('fecha-hoy').value = new Date().toISOString().slice(0, 16);
+
+    // Carga de Logos
+    function loadLogo(input, imgId) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById(imgId);
+                img.src = e.target.result;
+                img.style.display = 'block';
+                input.parentElement.style.display = 'none';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Carga múltiple de fotos
+    function handleFiles(input) {
+        const gallery = input.parentElement.nextElementSibling;
+        
+        if (input.files) {
+            Array.from(input.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.title = "Toca para eliminar";
+                    
+                    img.onclick = function() {
+                        if(confirm("¿Deseas eliminar esta evidencia fotográfica?")) {
+                            this.remove();
+                        }
+                    };
+                    gallery.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+        input.value = ""; 
+    }
+
+    // Semáforo de estados
+    function changeColor(selectElement) {
+        selectElement.classList.remove('status-cumple', 'status-nocumple', 'status-na');
+        if (selectElement.value === 'cumple') selectElement.classList.add('status-cumple');
+        else if (selectElement.value === 'nocumple') selectElement.classList.add('status-nocumple');
+        else if (selectElement.value === 'na') selectElement.classList.add('status-na');
+    }
+
+    // Limpieza manual total (para que funcione en iOS sin trabarse)
+    function limpiarTodo() {
+        if(!confirm('¿Estás seguro de que deseas borrar todos los datos, firmas y fotos del formulario?')) return;
+        
+        document.querySelectorAll('input[type="text"], textarea').forEach(i => i.value = '');
+        
+        document.querySelectorAll('select').forEach(s => {
+            s.value = '';
+            s.className = 'status-select';
+        });
+
+        document.querySelectorAll('.image-gallery').forEach(g => g.innerHTML = '');
+        
+        document.getElementById('logo1').style.display = 'none';
+        document.getElementById('logo1').nextElementSibling.style.display = 'flex';
+        
+        document.getElementById('logo2').style.display = 'none';
+        document.getElementById('logo2').nextElementSibling.style.display = 'flex';
+        
+        alert('El formulario ha sido limpiado correctamente.');
+    }
+</script>
+
+</body>
+</html>
