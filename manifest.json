@@ -1,0 +1,21 @@
+{
+  "name": "Auditoría Técnica PAGA",
+  "short_name": "PAGA",
+  "description": "Actas de Auditoría Técnica y Control Ambiental PAGA - Guatapé",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a2e50",
+  "icons": [
+    {
+      "src": "logo_entidad.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo_gsc.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
